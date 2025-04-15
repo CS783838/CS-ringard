@@ -9,13 +9,12 @@ if st.button("Get Earnings Data"):
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_earnings
 
-    if earnings.empty:
+    if earnings is None or earnings.empty:
         st.warning("No quarterly earnings data found.")
     else:
         st.subheader("Quarterly Earnings")
         st.dataframe(earnings)
 
-        
         st.subheader("Earnings Over Time")
         fig, ax = plt.subplots()
         earnings['Earnings'].plot(kind='bar', ax=ax)
