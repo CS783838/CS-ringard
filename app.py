@@ -8,7 +8,8 @@ ticker_input = st.text_input("Enter a stock ticker (e.g., AAPL, MSFT):", value="
 if st.button("Get Earnings Data"):
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_earnings
-
+    st.write("Raw earnings output:")
+    st.write(earnings)
     if earnings is None or earnings.empty:
         st.warning("No quarterly earnings data found.")
     else:
