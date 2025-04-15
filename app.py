@@ -1,5 +1,6 @@
 import streamlit as st
 import yfinance as yf
+import matplotlib.pyplot as plt
 
 st.title("📈 Stock Quarterly Results Tracker")
 
@@ -9,8 +10,7 @@ if st.button("Get Earnings Data"):
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_financials.transpose()
 
-    st.write("Raw output:")
-    st.write(earnings)
+    
 
     if earnings is None or earnings.empty:
         st.warning("No quarterly financial data found.")
