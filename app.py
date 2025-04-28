@@ -17,16 +17,15 @@ if st.button("Get Earnings Data"):
 
     st.subheader("Price Chart")
     fig, ax = plt.subplots(figsize=(10, 6))
-    plt.figure(figsize=(10, 6))
-    plt.plot(stock_data['Close'], label='Closing Price', color='blue')
-    plt.title(str(ticker) + " Stock Closing Prices Past Year")
-    plt.xlabel("Date")
-    plt.ylabel("Price (USD)")
-    plt.legend()
-    plt.grid()
-    plt.show()
-    
+    ax.plot(stock_data.index, stock_data['Close'], label='Closing Price', color='blue')
+    ax.set_title(f"{ticker_input.upper()} Stock Closing Prices Past Year")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price (USD)")
+    ax.legend()
+    ax.grid()
     st.pyplot(fig)
+    
+    
 
     if earnings is None or earnings.empty:
         st.warning("No quarterly financial data found.")
