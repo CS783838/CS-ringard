@@ -14,7 +14,7 @@ if st.button("Get Earnings Data"):
     st.subheader("Price Chart")
     plt.figure(figsize=(10, 6))
     plt.plot(stock_data['Close'], label='Closing Price', color='blue')
-    plt.title(ticker + " Stock Closing Prices Past Year")
+    plt.title(str(ticker) + " Stock Closing Prices Past Year")
     plt.xlabel("Date")
     plt.ylabel("Price (USD)")
     plt.legend()
