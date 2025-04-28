@@ -12,6 +12,7 @@ if st.button("Get Earnings Data"):
     stock_data = yf.download(ticker_input.upper(), start = "2024-04-28", end = "2025-04-28")
 
     st.subheader("Price Chart")
+    fig, ax = plt.subplots(figsize=(10, 6))
     plt.figure(figsize=(10, 6))
     plt.plot(stock_data['Close'], label='Closing Price', color='blue')
     plt.title(str(ticker) + " Stock Closing Prices Past Year")
@@ -21,6 +22,7 @@ if st.button("Get Earnings Data"):
     plt.grid()
     plt.show()
     
+    st.pyplot(fig)
 
     if earnings is None or earnings.empty:
         st.warning("No quarterly financial data found.")
