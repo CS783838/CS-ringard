@@ -1,6 +1,8 @@
 import streamlit as st
 import yfinance as yf
 import matplotlib.pyplot as plt
+import datetime
+
 
 st.title("📈 Stock Quarterly Results Tracker")
 
@@ -9,7 +11,9 @@ ticker_input = st.text_input("Enter a stock ticker (e.g., AAPL, MSFT):", value="
 if st.button("Get Earnings Data"):
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_financials.transpose()
-    stock_data = yf.download(ticker_input.upper(), start = "2024-04-28", end = "2025-04-28")
+    today = datetime.date.today()
+    one_year_ago = today - datetime.timedelta(days=365)
+    stock_data = yf.download(ticker_input.upper(), start=one_year_ago, end=today)
 
     st.subheader("Price Chart")
     fig, ax = plt.subplots(figsize=(10, 6))
