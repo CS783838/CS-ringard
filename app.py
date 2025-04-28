@@ -44,7 +44,7 @@ if st.session_state.earnings_fetched:
         stock_norm = stock_data['Close'] / stock_data['Close'].iloc[0] * 100
         spy_norm = spy_data['Close'] / spy_data['Close'].iloc[0] * 100
 
-        st.subheader("YTD Performance (Normalized to 100)")
+        st.subheader("YTD Performance vs SPY (Normalized to 100)")
         fig2, ax2 = plt.subplots(figsize=(10, 6))
         ax2.plot(stock_data.index, stock_norm, label=f'{ticker_input.upper()} (Normalized)', color='blue')
         ax2.plot(spy_data.index, spy_norm, label='S&P 500 (SPY) (Normalized)', color='orange')
