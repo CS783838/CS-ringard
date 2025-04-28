@@ -26,17 +26,18 @@ if st.button("Get Earnings Data"):
     st.pyplot(fig)
     
     
+# ignore this stuff for now
 
-    if earnings is None or earnings.empty:
-        st.warning("No quarterly financial data found.")
-    else:
-        st.subheader("Quarterly Financials")
-        st.dataframe(earnings)
+   # if earnings is None or earnings.empty:
+        #st.warning("No quarterly financial data found.")
+    #else:
+       # st.subheader("Quarterly Financials")
+        ##st.dataframe(earnings)
 
-        if "Net Income" in earnings.columns:
-            st.subheader("Net Income Over Time")
-            fig, ax = plt.subplots()
-            earnings["Net Income"].plot(kind='bar', ax=ax)
-            st.pyplot(fig)
-        else:
-            st.warning("Net Income data not available for this ticker.")
+        #if "Net Income" in earnings.columns:
+            #st.subheader("Net Income Over Time")
+            #fig, ax = plt.subplots()
+            #earnings["Net Income"].plot(kind='bar', ax=ax)
+            #st.pyplot(fig)
+        #else:
+            #st.warning("Net Income data not available for this ticker.")
