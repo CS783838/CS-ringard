@@ -8,7 +8,7 @@ st.title("📈 Stock Quarterly Results Tracker")
 
 ticker_input = st.text_input("Enter a stock ticker (e.g., AAPL, MSFT):", value="AAPL")
 
-# Session state: Remembers if "Get Earnings Data" was clicked so the app doesn't reset on every interaction
+# Session state: Remembers if "Get Earnings Data" was clicked so the app doesn't reset on every interaction (used chatgpt)
 if "earnings_fetched" not in st.session_state:
     st.session_state.earnings_fetched = False
 
@@ -40,7 +40,7 @@ if st.session_state.earnings_fetched:
     if compare_sp500:
         spy_data = yf.download('SPY', start=one_year_ago, end=today)
 
-        # Normalizes both stocks to start at 100, so they can be compared
+        # Normalizes both stocks to start at 100, so they can be compared (used chatgpt)
         stock_norm = stock_data['Close'] / stock_data['Close'].iloc[0] * 100
         spy_norm = spy_data['Close'] / spy_data['Close'].iloc[0] * 100
 
