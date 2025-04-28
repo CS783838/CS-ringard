@@ -8,6 +8,7 @@ st.title("📈 Stock Quarterly Results Tracker")
 
 ticker_input = st.text_input("Enter a stock ticker (e.g., AAPL, MSFT):", value="AAPL")
 
+
 if st.button("Get Earnings Data"):
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_financials.transpose()
@@ -24,6 +25,10 @@ if st.button("Get Earnings Data"):
     ax.legend()
     ax.grid()
     st.pyplot(fig)
+
+    compare_sp500 = st.checkbox("Compare with S&P 500 (SPY)")
+
+    st.subheader("YTD Performance vs S&P500")
     
     
 # ignore this stuff for now
