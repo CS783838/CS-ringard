@@ -15,7 +15,7 @@ if st.button("Get Earnings Data"):
     one_year_ago = today - datetime.timedelta(days=365)
     stock_data = yf.download(ticker_input.upper(), start=one_year_ago, end=today)
 
-    st.subheader("Price Chart")
+    st.subheader("YTD Performance")
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(stock_data.index, stock_data['Close'], label='Closing Price', color='blue')
     ax.set_title(f"{ticker_input.upper()} Stock Closing Prices Past Year")
