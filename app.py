@@ -9,7 +9,17 @@ ticker_input = st.text_input("Enter a stock ticker (e.g., AAPL, MSFT):", value="
 if st.button("Get Earnings Data"):
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_financials.transpose()
+    stock_data = yf.download(ticker_input.upper(), start = "2024-04-28", end = "2025-04-28")
 
+    st.subheader("Price Chart")
+    plt.figure(figsize=(10, 6))
+    plt.plot(stock_data['Close'], label='Closing Price', color='blue')
+    plt.title(ticker + " Stock Closing Prices Past Year")
+    plt.xlabel("Date")
+    plt.ylabel("Price (USD)")
+    plt.legend()
+    plt.grid()
+    plt.show()
     
 
     if earnings is None or earnings.empty:
