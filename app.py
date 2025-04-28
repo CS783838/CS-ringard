@@ -26,9 +26,22 @@ if st.button("Get Earnings Data"):
     ax.grid()
     st.pyplot(fig)
 
+
     compare_sp500 = st.checkbox("Compare with S&P 500 (SPY)")
 
-    st.subheader("YTD Performance vs S&P500")
+    if compare_sp500:
+        st.subheader("YTD Performance vs S&P500")
+        spy_data = yf.download('SPY', start=one_year_ago, end=today)
+        ax.plot(spy_data.index, spy_data['Close'], label='S&P 500 (SPY)', color='orange')
+        ax.set_title(f"{ticker_input.upper()} vs S&P 500 - YTD Performance")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Price (USD)")
+        ax.legend()
+        ax.grid()
+        st.pyplot(fig)
+
+
+
     
     
 # ignore this stuff for now
