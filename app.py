@@ -2,21 +2,83 @@ import streamlit as st
 import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime
+import requests
 
+# --- API Konfiguration ---
+ALPHA_VANTAGE_API_KEY = "KQ8EAFY3QFMIN54B"
+EODHD_API_KEY = "68100167ba5145.26409130"
 
-st.title("📈 Stock Quarterly Results Tracker")
+# URLs
+ALPHA_VANTAGE_URL = "https://www.alphavantage.co/query"
+EODHD_URL = "https://eodhd.com/api/eod"
+
+# --- Streamlit App ---
+st.title("📈 Stock Quarterly Results Tracker + APIs")
 
 ticker_input = st.text_input("Enter a stock ticker (e.g., AAPL, MSFT):", value="AAPL")
 
-# Session state: Remembers if "Get Earnings Data" was clicked so the app doesn't reset on every interaction (used chatgpt)
+if ticker_input:
+    # --- Alpha Vantage Overview Daten abrufen ---
+    params_overview = {
+        "function": "OVERVIEW",
+        "symbol": ticker_input.upper(),
+        "apikey": ALPHA_VANTAGE_API_KEY
+    }
+    overview_response = requests.get(ALPHA_VANTAGE_URL, params=params_overview)
+
+    if overview_response.status_code == 200:
+        overview_data = overview_response.json()
+
+        if overview_data:
+            company_name = overview_data.get("Name", ticker_input.upper())
+            st.header(f"{company_name} ({ticker_input.upper()})")
+
+            # Oben: Current Price (aus GLOBAL_QUOTE), Market Cap, P/E Ratio
+            quote_params = {
+                "function": "GLOBAL_QUOTE",
+                "symbol": ticker_input.upper(),
+                "apikey": ALPHA_VANTAGE_API_KEY
+            }
+            quote_response = requests.get(ALPHA_VANTAGE_URL, params=quote_params)
+            if quote_response.status_code == 200:
+                quote_data = quote_response.json().get("Global Quote", {})
+                current_price = quote_data.get("05. price", "N/A")
+            else:
+                current_price = "N/A"
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Current Price", f"${current_price}")
+            with col2:
+                market_cap = overview_data.get("MarketCapitalization", "N/A")
+                if market_cap != "N/A":
+                    market_cap = f"${int(market_cap):,}"
+                st.metric("Market Cap", market_cap)
+            with col3:
+                st.metric("P/E Ratio", overview_data.get("PERatio", "N/A"))
+
+            # Untere Werte: Ausklappbar
+            with st.expander("More Financial Data"):
+                st.write(f"**EPS (Earnings Per Share):** {overview_data.get('EPS', 'N/A')}")
+                st.write(f"**Revenue/Share:** {overview_data.get('RevenuePerShareTTM', 'N/A')}")
+                st.write(f"**Book Value:** {overview_data.get('BookValue', 'N/A')}")
+                st.write(f"**PEG Ratio:** {overview_data.get('PEGRatio', 'N/A')}")
+                st.write(f"**Dividend Yield:** {overview_data.get('DividendYield', 'N/A')}")
+                st.write(f"**Beta:** {overview_data.get('Beta', 'N/A')}")
+                st.write(f"**Profit Margin:** {overview_data.get('ProfitMargin', 'N/A')}")
+                st.write(f"**ROE (Return on Equity):** {overview_data.get('ReturnOnEquityTTM', 'N/A')}")
+                st.write(f"**52-Week Range:** {overview_data.get('52WeekLow', 'N/A')} - {overview_data.get('52WeekHigh', 'N/A')}")
+        else:
+            st.warning("No overview data found for this ticker.")
+    else:
+        st.error("Failed to fetch company overview data.")
+
+# --- Session State Button für Earnings + Charts ---
 if "earnings_fetched" not in st.session_state:
     st.session_state.earnings_fetched = False
 
 if st.button("Get Earnings Data"):
     st.session_state.earnings_fetched = True
-
-
-
 
 if st.session_state.earnings_fetched:
     ticker = yf.Ticker(ticker_input.upper())
@@ -40,7 +102,6 @@ if st.session_state.earnings_fetched:
     if compare_sp500:
         spy_data = yf.download('SPY', start=one_year_ago, end=today)
 
-        # Normalizes both stocks to start at 100, so they can be compared (used chatgpt)
         stock_norm = stock_data['Close'] / stock_data['Close'].iloc[0] * 100
         spy_norm = spy_data['Close'] / spy_data['Close'].iloc[0] * 100
 
@@ -54,23 +115,3 @@ if st.session_state.earnings_fetched:
         ax2.legend()
         ax2.grid()
         st.pyplot(fig2)
-
-
-
-    
-    
-# ignore this stuff for now
-
-   # if earnings is None or earnings.empty:
-        #st.warning("No quarterly financial data found.")
-    #else:
-       # st.subheader("Quarterly Financials")
-        ##st.dataframe(earnings)
-
-        #if "Net Income" in earnings.columns:
-            #st.subheader("Net Income Over Time")
-            #fig, ax = plt.subplots()
-            #earnings["Net Income"].plot(kind='bar', ax=ax)
-            #st.pyplot(fig)
-        #else:
-            #st.warning("Net Income data not available for this ticker.")
