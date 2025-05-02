@@ -126,13 +126,13 @@ if st.session_state.earnings_fetched:
 
     # --- Quarterly Revenue and Profit Chart ---
     if not earnings.empty:
-        st.subheader("📊 Quarterly Revenue and Profit (Sample Data)")
+        st.subheader("Quarterly Revenue and Profit (Sample Data)")
 
         quarters = earnings.index.astype(str)
         revenue = earnings.iloc[:, 0]
         profit = earnings.iloc[:, 1] if earnings.shape[1] > 1 else [0] * len(earnings)
 
-        colors = ['#4CAF50', '#2196F3']
+        colors = ['green', 'blue']
 
         fig3, ax3 = plt.subplots(figsize=(8, 6))
         ax3.bar(quarters, revenue, color=colors[0], label='Revenue')
