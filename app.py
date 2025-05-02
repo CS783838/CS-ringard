@@ -117,15 +117,3 @@ if st.session_state.earnings_fetched:
         ax2.grid()
         st.pyplot(fig2)
 
-# --- Custom colors in charts ---
-colors = ['#4CAF50', '#2196F3']  # Green for Revenue, Blue for Profit
-
-fig, ax = plt.subplots()
-ax.bar(filtered_df['Quarter'], filtered_df['Revenue'], color=colors[0], label='Revenue')
-ax.bar(filtered_df['Quarter'], filtered_df['Profit'], color=colors[1], bottom=filtered_df['Revenue'], label='Profit')
-ax.set_ylabel('USD ($B)')
-ax.set_title(f"{company} Revenue and Profit per Quarter")
-ax.legend()
-
-st.pyplot(fig)
-
