@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 import datetime
 import requests
 
+# --- Helper function ---
+def safe_get(value):
+    """Returns value or 'N/A' if value is None or empty string"""
+    return value if value not in ["", None] else "N/A"
+
 # --- API Konfiguration ---
 ALPHA_VANTAGE_API_KEY = "KQ8EAFY3QFMIN54B"
 EODHD_API_KEY = "68100167ba5145.26409130"
@@ -32,7 +37,7 @@ if ticker_input:
         overview_data = overview_response.json()
 
         if overview_data:
-            company_name = overview_data.get("Name", ticker_input.upper())
+            company_name = safe_get(overview_data.get("Name", ticker_input.upper()))
             st.header(f"{company_name} ({ticker_input.upper()})")
 
             # Oben: Current Price (aus GLOBAL_QUOTE), Market Cap, P/E Ratio
@@ -44,7 +49,7 @@ if ticker_input:
             quote_response = requests.get(ALPHA_VANTAGE_URL, params=quote_params)
             if quote_response.status_code == 200:
                 quote_data = quote_response.json().get("Global Quote", {})
-                current_price = quote_data.get("05. price", "N/A")
+                current_price = safe_get(quote_data.get("05. price"))
             else:
                 current_price = "N/A"
 
@@ -52,24 +57,24 @@ if ticker_input:
             with col1:
                 st.metric("Current Price", f"${current_price}")
             with col2:
-                market_cap = overview_data.get("MarketCapitalization", "N/A")
+                market_cap = safe_get(overview_data.get("MarketCapitalization"))
                 if market_cap != "N/A":
                     market_cap = f"${int(market_cap):,}"
                 st.metric("Market Cap", market_cap)
             with col3:
-                st.metric("P/E Ratio", overview_data.get("PERatio", "N/A"))
+                st.metric("P/E Ratio", safe_get(overview_data.get("PERatio")))
 
             # Untere Werte: Ausklappbar
             with st.expander("More Financial Data"):
-                st.write(f"**EPS (Earnings Per Share):** {overview_data.get('EPS', 'N/A')}")
-                st.write(f"**Revenue/Share:** {overview_data.get('RevenuePerShareTTM', 'N/A')}")
-                st.write(f"**Book Value:** {overview_data.get('BookValue', 'N/A')}")
-                st.write(f"**PEG Ratio:** {overview_data.get('PEGRatio', 'N/A')}")
-                st.write(f"**Dividend Yield:** {overview_data.get('DividendYield', 'N/A')}")
-                st.write(f"**Beta:** {overview_data.get('Beta', 'N/A')}")
-                st.write(f"**Profit Margin:** {overview_data.get('ProfitMargin', 'N/A')}")
-                st.write(f"**ROE (Return on Equity):** {overview_data.get('ReturnOnEquityTTM', 'N/A')}")
-                st.write(f"**52-Week Range:** {overview_data.get('52WeekLow', 'N/A')} - {overview_data.get('52WeekHigh', 'N/A')}")
+                st.write(f"**EPS:** {safe_get(overview_data.get('EPS'))}")
+                st.write(f"**Revenue/Share:** {safe_get(overview_data.get('RevenuePerShareTTM'))}")
+                st.write(f"**Book Value:** {safe_get(overview_data.get('BookValue'))}")
+                st.write(f"**PEG Ratio:** {safe_get(overview_data.get('PEGRatio'))}")
+                st.write(f"**Dividend Yield:** {safe_get(overview_data.get('DividendYield'))}")
+                st.write(f"**Beta:** {safe_get(overview_data.get('Beta'))}")
+                st.write(f"**Profit Margin:** {safe_get(overview_data.get('ProfitMargin'))}")
+                st.write(f"**ROE:** {safe_get(overview_data.get('ReturnOnEquityTTM'))}")
+                st.write(f"**52-Week Range:** {safe_get(overview_data.get('52WeekLow'))} - {safe_get(overview_data.get('52WeekHigh'))}")
         else:
             st.warning("No overview data found for this ticker.")
     else:
@@ -119,7 +124,7 @@ if st.session_state.earnings_fetched:
         ax2.grid()
         st.pyplot(fig2)
 
- # --- 📊 Quarterly Revenue and Profit Chart (Basic Matplotlib) ---
+    # --- Quarterly Revenue and Profit Chart ---
     if not earnings.empty:
         st.subheader("📊 Quarterly Revenue and Profit (Sample Data)")
 
@@ -127,7 +132,7 @@ if st.session_state.earnings_fetched:
         revenue = earnings.iloc[:, 0]
         profit = earnings.iloc[:, 1] if earnings.shape[1] > 1 else [0] * len(earnings)
 
-        colors = ['#4CAF50', '#2196F3']  # Green for Revenue, Blue for Profit
+        colors = ['#4CAF50', '#2196F3']
 
         fig3, ax3 = plt.subplots(figsize=(8, 6))
         ax3.bar(quarters, revenue, color=colors[0], label='Revenue')
