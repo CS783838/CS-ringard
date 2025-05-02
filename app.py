@@ -119,7 +119,7 @@ if st.session_state.earnings_fetched and ticker_input.strip() != "":
 
 # --- Quarterly Revenue and Profit Chart ---
     if not earnings.empty:
-        st.subheader("📊 Quarterly Revenue and Profit (Sample Data)")
+        st.subheader(" Quarterly Revenue and Profit (Sample Data)")
 
         quarters = earnings.index.astype(str)
         revenue = earnings.iloc[:, 0]
@@ -137,3 +137,4 @@ if st.session_state.earnings_fetched and ticker_input.strip() != "":
         st.pyplot(fig3)
     else:
         st.info("No earnings data available to plot.")
+
