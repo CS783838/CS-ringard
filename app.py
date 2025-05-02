@@ -81,7 +81,7 @@ if "earnings_fetched" not in st.session_state:
 if st.button("Get Earnings Data"):
     st.session_state.earnings_fetched = True
 
-if st.session_state.earnings_fetched:
+if st.session_state.earnings_fetched and ticker_input.strip() != "":
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_financials.transpose()
     today = datetime.date.today()
