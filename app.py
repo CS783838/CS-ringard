@@ -117,3 +117,23 @@ if st.session_state.earnings_fetched:
         ax2.grid()
         st.pyplot(fig2)
 
+# --- 📊 Quarterly Revenue and Profit Chart ---
+    if not earnings.empty:
+        st.subheader("📊 Quarterly Revenue and Profit (Sample Data)")
+
+        quarters = earnings.index.astype(str)
+        revenue = earnings.iloc[:, 0]
+        profit = earnings.iloc[:, 1] if earnings.shape[1] > 1 else [0] * len(earnings)
+
+        colors = ['#4CAF50', '#2196F3']
+
+        fig3, ax3 = plt.subplots(figsize=(8, 6))
+        ax3.bar(quarters, revenue, color=colors[0], label='Revenue')
+        ax3.bar(quarters, profit, color=colors[1], bottom=revenue, label='Profit')
+        ax3.set_ylabel('USD ($B)')
+        ax3.set_title(f"{company_name} Revenue and Profit per Quarter")
+        ax3.legend()
+
+        st.pyplot(fig3)
+    else:
+        st.info("No earnings data available to plot.")
