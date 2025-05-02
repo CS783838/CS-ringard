@@ -117,7 +117,7 @@ if st.session_state.earnings_fetched:
         ax2.grid()
         st.pyplot(fig2)
 
-# --- 📊 Quarterly Revenue and Profit Chart ---
+# --- Quarterly Revenue and Profit Chart ---
     if not earnings.empty:
         st.subheader("📊 Quarterly Revenue and Profit (Sample Data)")
 
