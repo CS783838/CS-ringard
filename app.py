@@ -1,3 +1,4 @@
+# --- Imports ---
 import streamlit as st
 import yfinance as yf
 import matplotlib.pyplot as plt
@@ -12,9 +13,10 @@ EODHD_API_KEY = "68100167ba5145.26409130"
 ALPHA_VANTAGE_URL = "https://www.alphavantage.co/query"
 EODHD_URL = "https://eodhd.com/api/eod"
 
-# --- Streamlit App ---
+# --- Streamlit App Title ---
 st.title("📈 Stock Quarterly Results Tracker + APIs")
 
+# --- User Ticker Input ---
 ticker_input = st.text_input("Enter a stock ticker (e.g., AAPL, MSFT):", value="AAPL")
 
 if ticker_input:
@@ -80,6 +82,7 @@ if "earnings_fetched" not in st.session_state:
 if st.button("Get Earnings Data"):
     st.session_state.earnings_fetched = True
 
+# --- Earnings and Stock Chart ---
 if st.session_state.earnings_fetched:
     ticker = yf.Ticker(ticker_input.upper())
     earnings = ticker.quarterly_financials.transpose()
@@ -116,14 +119,4 @@ if st.session_state.earnings_fetched:
         ax2.grid()
         st.pyplot(fig2)
 
-# --- Custom colors in charts ---
-colors = ['#4CAF50', '#2196F3']  # Green for Revenue, Blue for Profit
 
-fig, ax = plt.subplots()
-ax.bar(filtered_df['Quarter'], filtered_df['Revenue'], color=colors[0], label='Revenue')
-ax.bar(filtered_df['Quarter'], filtered_df['Profit'], color=colors[1], bottom=filtered_df['Revenue'], label='Profit')
-ax.set_ylabel('USD ($B)')
-ax.set_title(f"{company} Revenue and Profit per Quarter")
-ax.legend()
-
-st.pyplot(fig)
