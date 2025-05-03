@@ -3,19 +3,20 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime
 
-st.title("📈 YTD Performance & Custom Comparison")
+st.title("YTD Performance & Comparison")
 
+# Gets ticker from homepage
 ticker_input = st.session_state.get("ticker", "").strip().upper()
 
 if not ticker_input:
     st.warning("Please enter a stock ticker on the homepage first.")
     st.stop()
 
-# --- Date range ---
+# Initializes date variables for YTD calculation
 today = datetime.date.today()
 one_year_ago = today - datetime.timedelta(days=365)
 
-# --- Download main stock data ---
+# Get stock data from the pervious year with yfinance
 try:
     stock_data = yf.download(ticker_input, start=one_year_ago, end=today)
 except Exception as e:
@@ -26,8 +27,8 @@ if stock_data.empty:
     st.error(f"No data found for {ticker_input}.")
     st.stop()
 
-# --- Chart 1: YTD Stock Price ---
-st.subheader("📅 YTD Performance")
+# 1st Chart: YTD performance of entered stock
+st.subheader("YTD Performance")
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(stock_data.index, stock_data['Close'], label='Closing Price', color='blue')
 ax.set_title(f"{ticker_input} Stock Closing Prices (Past Year)")
@@ -37,12 +38,12 @@ ax.legend()
 ax.grid()
 st.pyplot(fig)
 
-# --- Chart 2: Custom Comparison ---
+# 2nd Chart: Compares desired stock with another ticker
 compare = st.checkbox("Compare with another ticker", value=True)
 
 if compare:
     comparison_ticker = st.text_input("Enter a comparison ticker (e.g., SPY, QQQ, MSFT):", value="SPY").strip().upper()
-
+    # Get second ticker's data from yfinance
     if comparison_ticker:
         try:
             comp_data = yf.download(comparison_ticker, start=one_year_ago, end=today)
@@ -53,11 +54,11 @@ if compare:
         if comp_data.empty:
             st.error(f"No data found for {comparison_ticker}.")
         else:
-            # Normalize both to 100
+            # normalizes both to 100 for proper comparison
             stock_norm = stock_data['Close'] / stock_data['Close'].iloc[0] * 100
             comp_norm = comp_data['Close'] / comp_data['Close'].iloc[0] * 100
 
-            st.subheader(f"📊 YTD Comparison: {ticker_input} vs {comparison_ticker}")
+            st.subheader(f"YTD Comparison: {ticker_input} vs {comparison_ticker}")
             fig2, ax2 = plt.subplots(figsize=(10, 6))
             ax2.plot(stock_data.index, stock_norm, label=f"{ticker_input} (Normalized)", color='blue')
             ax2.plot(comp_data.index, comp_norm, label=f"{comparison_ticker} (Normalized)", color='orange')

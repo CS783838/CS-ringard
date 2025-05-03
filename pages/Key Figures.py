@@ -3,19 +3,19 @@ import yfinance as yf
 import requests
 import matplotlib.pyplot as plt
 
-st.title("📋 Key Figures Overview")
+st.title("Key Figures Overview")
 
-# --- API Keys ---
+# API Keys 
 ALPHA_VANTAGE_API_KEY = "KQ8EAFY3QFMIN54B"
 ALPHA_VANTAGE_URL = "https://www.alphavantage.co/query"
 
-# --- Ticker ---
+# Gets ticker from homepage
 ticker_input = st.session_state.get("ticker", "").strip().upper()
 if not ticker_input:
     st.warning("Please enter a stock ticker on the homepage first.")
     st.stop()
 
-# --- Fetch Overview Data ---
+# Get overview stock data from Vantage API
 params_overview = {
     "function": "OVERVIEW",
     "symbol": ticker_input,
@@ -32,10 +32,11 @@ if not overview_data:
     st.warning("No overview data found for this ticker.")
     st.stop()
 
+# Displays company name from ticker
 company_name = overview_data.get("Name", ticker_input)
 st.header(f"{company_name} ({ticker_input})")
 
-# --- Fetch Quote Data for Current Price ---
+# Gets Quote Data for Current Price from Vantage API
 quote_params = {
     "function": "GLOBAL_QUOTE",
     "symbol": ticker_input,
@@ -45,7 +46,7 @@ quote_response = requests.get(ALPHA_VANTAGE_URL, params=quote_params)
 quote_data = quote_response.json().get("Global Quote", {})
 current_price = quote_data.get("05. price", "N/A")
 
-# --- Metric Display ---
+# Display 3 key figures in columns
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -60,7 +61,7 @@ with col2:
 with col3:
     st.metric("P/E Ratio", overview_data.get("PERatio", "N/A"))
 
-# --- More Financial Info ---
+# Drop down with more figures from the API
 with st.expander("More Financial Data"):
     st.write(f"**EPS (Earnings Per Share):** {overview_data.get('EPS', 'N/A')}")
     st.write(f"**Revenue/Share:** {overview_data.get('RevenuePerShareTTM', 'N/A')}")
@@ -72,7 +73,7 @@ with st.expander("More Financial Data"):
     st.write(f"**ROE (Return on Equity):** {overview_data.get('ReturnOnEquityTTM', 'N/A')}")
     st.write(f"**52-Week Range:** {overview_data.get('52WeekLow', 'N/A')} - {overview_data.get('52WeekHigh', 'N/A')}")
 
-# --- Quarterly Revenue and Profit Chart ---
+# Quarterly Revenue and Profit Chart 
 st.subheader("📊 Quarterly Revenue and Profit")
 
 ticker = yf.Ticker(ticker_input)
