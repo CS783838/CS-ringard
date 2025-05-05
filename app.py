@@ -29,3 +29,5 @@ if st.session_state.get("ticker"):
     st.info(f"Currently analyzing: **{st.session_state['ticker']}**")
 else:
     st.warning("Please enter a valid stock ticker to get started.")
+
+aabb
