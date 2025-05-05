@@ -2,6 +2,7 @@ import streamlit as st
 import yfinance as yf
 import requests
 import matplotlib.pyplot as plt
+import numpy as np
 
 st.title("Key Figures Overview")
 
@@ -73,8 +74,7 @@ with st.expander("More Financial Data"):
     st.write(f"**ROE (Return on Equity):** {overview_data.get('ReturnOnEquityTTM', 'N/A')}")
     st.write(f"**52-Week Range:** {overview_data.get('52WeekLow', 'N/A')} - {overview_data.get('52WeekHigh', 'N/A')}")
 
-# Quarterly Revenue and Profit Chart 
-st.subheader("📊 Quarterly Revenue and Profit")
+st.subheader("Quarterly Revenue and Profit")
 
 ticker = yf.Ticker(ticker_input)
 earnings = ticker.quarterly_financials.transpose()
@@ -83,16 +83,24 @@ if earnings.empty:
     st.info("No earnings data available to plot.")
 else:
     quarters = earnings.index.astype(str)
-    revenue = earnings.iloc[:, 0]
-    profit = earnings.iloc[:, 1] if earnings.shape[1] > 1 else [0] * len(earnings)
 
-    colors = ['#4CAF50', '#2196F3']
+    revenue = earnings['Total Revenue'] if 'Total Revenue' in earnings.columns else pd.Series([0]*len(earnings), index=earnings.index)
+    profit = earnings['Net Income'] if 'Net Income' in earnings.columns else pd.Series([0]*len(earnings), index=earnings.index)
 
-    fig, ax = plt.subplots(figsize=(8, 6))
-    ax.bar(quarters, revenue, color=colors[0], label='Revenue')
-    ax.bar(quarters, profit, color=colors[1], bottom=revenue, label='Profit')
+    revenue = revenue / 1e9
+    profit = profit / 1e9
+
+    width = 0.35
+    x = np.arange(len(quarters))
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(x - width/2, revenue, width, label='Revenue', color='#4CAF50')
+    ax.bar(x + width/2, profit, width, label='Profit', color='#2196F3')
+
     ax.set_ylabel('USD ($B)')
     ax.set_title(f"{company_name} Revenue and Profit per Quarter")
+    ax.set_xticks(x)
+    ax.set_xticklabels(quarters, rotation=45)
     ax.legend()
 
     st.pyplot(fig)
