@@ -84,8 +84,8 @@ if earnings.empty:
 else:
     quarters = earnings.index.astype(str)
 
-    revenue = earnings['Total Revenue'] if 'Total Revenue' in earnings.columns else pd.Series([0]*len(earnings), index=earnings.index)
-    profit = earnings['Net Income'] if 'Net Income' in earnings.columns else pd.Series([0]*len(earnings), index=earnings.index)
+    revenue = earnings['Total Revenue'] 
+    profit = earnings['Net Income'] 
 
     revenue = revenue / 1e9
     profit = profit / 1e9
