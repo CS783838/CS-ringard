@@ -47,16 +47,28 @@ quote_response = requests.get(ALPHA_VANTAGE_URL, params=quote_params)
 quote_data = quote_response.json().get("Global Quote", {})
 current_price = quote_data.get("05. price", "N/A")
 
+# Format current price to 2 decimal places if valid
+if current_price != "N/A":
+    try:
+        current_price = f"${float(current_price):,.2f}"
+    except ValueError:
+        current_price = "N/A"
+
 # Display 3 key figures in columns
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric("Current Price", f"${current_price}")
+    st.metric("Current Price", current_price)
 
 with col2:
     market_cap = overview_data.get("MarketCapitalization", "N/A")
     if market_cap != "N/A":
-        market_cap = f"${int(market_cap):,}"
+        try:
+            market_cap_value = int(market_cap)
+            market_cap_billion = market_cap_value / 1e9
+            market_cap = f"${market_cap_billion:,.2f}B"
+        except ValueError:
+            market_cap = "N/A"
     st.metric("Market Cap", market_cap)
 
 with col3:
