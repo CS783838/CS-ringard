@@ -7,18 +7,6 @@ st.set_page_config(page_title="Stock Dashboard", layout="wide")
 
 st.title("Welcome to the Trade Zone")
 
-# Welcome text
-st.markdown(
-    """
-    This dashboard helps you explore the financial performance of public companies using real-time market data.
-
-    **To begin**, enter a US stock ticker below, then navigate through the analysis pages using the sidebar:
-    -  **YTD Performance**
-    -  **Key Figures**
-    -  **Competitor Analysis**
-    """
-)
-
 # User inputs ticker, saved in session state
 st.markdown("Select a Company")
 default_value = st.session_state.get("ticker", "")
