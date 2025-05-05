@@ -3,22 +3,12 @@ import requests
 from datetime import datetime
 import yfinance as yf
 
-st.set_page_config(page_title="Stock Dashboard", layout="wide")
+# Gets ticker from homepage
+ticker_input = st.session_state.get("ticker", "").strip().upper()
 
-st.title("Welcome to the Trade Zone")
-
-# User inputs ticker, saved in session state
-st.markdown("Select a Company")
-default_value = st.session_state.get("ticker", "")
-ticker = st.text_input("Enter stock ticker (e.g., AAPL)", value=default_value)
-
-if ticker:
-    st.session_state["ticker"] = ticker.strip().upper()
-
-if st.session_state.get("ticker"):
-    st.info(f"Currently analyzing: **{st.session_state['ticker']}**")
-else:
-    st.warning("Please enter a valid stock ticker to get started.")
+if not ticker_input:
+    st.warning("Please enter a stock ticker on the homepage first.")
+    st.stop()
 
 # ----------------- NEWS SECTION -----------------
 st.header("Latest News")
