@@ -58,6 +58,7 @@ if compare:
             stock_norm = stock_data['Close'] / stock_data['Close'].iloc[0] * 100
             comp_norm = comp_data['Close'] / comp_data['Close'].iloc[0] * 100
 
+            # generates second chart with both tickers
             st.subheader(f"YTD Comparison: {ticker_input} vs {comparison_ticker}")
             fig2, ax2 = plt.subplots(figsize=(10, 6))
             ax2.plot(stock_data.index, stock_norm, label=f"{ticker_input} (Normalized)", color='blue')
