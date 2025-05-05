@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 st.title("Industry Comparison")
 
-# --- Benchmarks ---
+# Dictionnary of sectors with benchmarks for easy comparison
 INDUSTRY_BENCHMARKS = {
     "Technology": {
         "PE_Ratio": 27.5, "MarketCap_B": 500,
@@ -53,13 +53,13 @@ INDUSTRY_BENCHMARKS = {
     }
 }
 
-# --- Ticker from session ---
+# Gets ticker from main app.py
 ticker = st.session_state.get("ticker", "").strip().upper()
 if not ticker:
     st.warning("Please enter a stock ticker on the homepage first.")
     st.stop()
 
-# --- Stock info from yfinance ---
+# Gets necessary stock information from yfinance
 try:
     stock = yf.Ticker(ticker)
     info = stock.info
@@ -74,14 +74,14 @@ except:
     st.error("Failed to fetch data from yfinance.")
     st.stop()
 
-# --- Check for completeness ---
+# Error if theres no sector / its not in the dictionnary
 if not sector or sector not in INDUSTRY_BENCHMARKS:
     st.warning(f"No benchmark data for sector: {sector}")
     st.stop()
 
 bench = INDUSTRY_BENCHMARKS[sector]
 
-# --- Convert and round stock metrics ---
+# Convert and round metrics for better comparison
 stock_data = {
     "PE_Ratio": round(stock_pe, 2) if stock_pe else None,
     "MarketCap_B": round(stock_mc / 1e9, 2) if stock_mc else None,
@@ -93,7 +93,7 @@ stock_data = {
 
 st.markdown(f"**Sector:** {sector}")
 
-st.subheader("Valuation")
+st.subheader("P/E Comparison")
 
 # --- P/E Ratio Chart ---
 pe_diff = round(stock_data["PE_Ratio"] - bench["PE_Ratio"], 2)
@@ -109,6 +109,8 @@ pe_df = pd.DataFrame({
 }, index=[ticker, f"{sector} Avg"])
 st.write("**P/E Ratio**")
 st.bar_chart(pe_df)
+
+st.subheader("Market Cap Comparison")
 
 # --- Market Cap Chart ---
 mc_diff = round(stock_data["MarketCap_B"] - bench["MarketCap_B"], 2)
