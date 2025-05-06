@@ -130,7 +130,7 @@ st.bar_chart(mc_df)
 
 st.subheader("Profitability & Dividend Yield")
 
-# Table (keep as-is)
+# Table of key metrics
 profit_df = pd.DataFrame({
     "Metric": ["ROE (%)", "Profit Margin (%)", "Dividend Yield (%)"],
     ticker: [stock_data["ROE"], stock_data["ProfitMargin"], stock_data["DividendYield"]],
@@ -138,13 +138,13 @@ profit_df = pd.DataFrame({
 }).set_index("Metric")
 st.dataframe(profit_df)
 
-# --- ROE Chart ---
+# ROE chart
 st.write("**Return on Equity (ROE %)**")
 roe_diff = round(stock_data["ROE"] - bench["ROE"], 2)
 if roe_diff > 0:
-    st.markdown(f"<span style='color:green'>{ticker} is {roe_diff}% above the industry average.</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:green'>{ticker} is {roe_diff} points above the industry average.</span>", unsafe_allow_html=True)
 elif roe_diff < 0:
-    st.markdown(f"<span style='color:red'>{ticker} is {abs(roe_diff)}% below the industry average.</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:red'>{ticker} is {abs(roe_diff)} points below the industry average.</span>", unsafe_allow_html=True)
 else:
     st.markdown(f"{ticker} is exactly in line with the industry average.")
 
@@ -158,9 +158,9 @@ st.bar_chart(roe_df)
 st.write("**Profit Margin (%)**")
 pm_diff = round(stock_data["ProfitMargin"] - bench["ProfitMargin"], 2)
 if pm_diff > 0:
-    st.markdown(f"<span style='color:green'>{ticker} has a profit margin {pm_diff}% above the industry average.</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:green'>{ticker} has a profit margin {pm_diff} points above the industry average.</span>", unsafe_allow_html=True)
 elif pm_diff < 0:
-    st.markdown(f"<span style='color:red'>{ticker} has a profit margin {abs(pm_diff)}% below the industry average.</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:red'>{ticker} has a profit margin {abs(pm_diff)} points below the industry average.</span>", unsafe_allow_html=True)
 else:
     st.markdown(f"{ticker}'s profit margin is exactly at the industry average.")
 
@@ -174,9 +174,9 @@ st.bar_chart(pm_df)
 st.write("**Dividend Yield (%)**")
 div_diff = round(stock_data["DividendYield"] - bench["DividendYield"], 2)
 if div_diff > 0:
-    st.markdown(f"<span style='color:green'>{ticker} offers a dividend yield {div_diff}% above the industry average.</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:green'>{ticker} offers a dividend yield {div_diff} points above the industry average.</span>", unsafe_allow_html=True)
 elif div_diff < 0:
-    st.markdown(f"<span style='color:red'>{ticker}'s dividend yield is {abs(div_diff)}% below the industry average.</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:red'>{ticker}'s dividend yield is {abs(div_diff)} points below the industry average.</span>", unsafe_allow_html=True)
 else:
     st.markdown(f"{ticker}'s dividend yield is exactly in line with the industry average.")
 
@@ -187,12 +187,28 @@ st.bar_chart(div_df)
 
 
 # --- Risk Table & Chart ---
+st.subheader("Risk")
+
+# Table
 risk_df = pd.DataFrame({
     "Metric": ["Beta"],
     ticker: [stock_data["Beta"]],
     f"{sector} Avg": [bench["Beta"]]
 }).set_index("Metric")
-
-st.subheader("Risk")
 st.dataframe(risk_df)
-st.bar_chart(risk_df)
+
+# --- Beta chart ---
+st.write("**Beta (Volatility vs Market)**")
+beta_diff = round(stock_data["Beta"] - bench["Beta"], 2)
+if beta_diff > 0:
+    st.markdown(f"<span style='color:red'>{ticker} is {beta_diff} more volatile than the industry average.</span>", unsafe_allow_html=True)
+elif beta_diff < 0:
+    st.markdown(f"<span style='color:green'>{ticker} is {abs(beta_diff)} less volatile than the industry average.</span>", unsafe_allow_html=True)
+else:
+    st.markdown(f"{ticker}'s volatility is in line with the industry average.")
+
+beta_df = pd.DataFrame({
+    "Beta": [stock_data["Beta"], bench["Beta"]]
+}, index=[ticker, f"{sector} Avg"])
+st.bar_chart(beta_df)
+
