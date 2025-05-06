@@ -104,7 +104,7 @@ elif pe_diff < 0:
 else:
     st.markdown(f"{ticker} is exactly in line with the industry average.")
 
-# Plot comparison chart using Pandas and then use streamlit to make a chart of it
+# Generate comparison chart using Pandas and then use streamlit to visualize it
 pe_df = pd.DataFrame({
     "P/E Ratio": [stock_data["PE_Ratio"], bench["PE_Ratio"]]
 }, index=[ticker, f"{sector} Avg"])
