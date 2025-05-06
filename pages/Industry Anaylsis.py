@@ -81,7 +81,7 @@ if not sector or sector not in INDUSTRY_BENCHMARKS:
 
 bench = INDUSTRY_BENCHMARKS[sector]
 
-# Convert and round metrics for better comparison
+# Convert and round metrics for proper comparison with dictionnary
 stock_data = {
     "PE_Ratio": round(float(stock_pe), 2) if stock_pe is not None else None,
     "MarketCap_B": round(float(stock_mc) / 1e9, 2) if stock_mc is not None else None,
@@ -95,7 +95,7 @@ st.markdown(f"**Sector:** {sector}")
 
 st.subheader("P/E Comparison")
 
-# --- P/E Ratio Chart ---
+# PE chart
 pe_diff = round(stock_data["PE_Ratio"] - bench["PE_Ratio"], 2)
 if pe_diff > 0:
     st.markdown(f"<span style='color:green'>{ticker} is {pe_diff} points above the industry average.</span>", unsafe_allow_html=True)
@@ -104,6 +104,7 @@ elif pe_diff < 0:
 else:
     st.markdown(f"{ticker} is exactly in line with the industry average.")
 
+# Plot comparison chart using Pandas and then use streamlit to make a chart of it
 pe_df = pd.DataFrame({
     "P/E Ratio": [stock_data["PE_Ratio"], bench["PE_Ratio"]]
 }, index=[ticker, f"{sector} Avg"])
@@ -112,7 +113,7 @@ st.bar_chart(pe_df)
 
 st.subheader("Market Cap Comparison")
 
-# --- Market Cap Chart ---
+# Market Cap comparison (always using the same procedure as before)
 mc_diff = round(stock_data["MarketCap_B"] - bench["MarketCap_B"], 2)
 if mc_diff > 0:
     st.markdown(f"<span style='color:green'>{ticker} is {mc_diff} billion USD above the industry average.</span>", unsafe_allow_html=True)
@@ -130,7 +131,7 @@ st.bar_chart(mc_df)
 
 st.subheader("Profitability & Dividend Yield")
 
-# Table of key metrics
+# Table of key metrics (again first using pandas and then streamlit)
 profit_df = pd.DataFrame({
     "Metric": ["ROE (%)", "Profit Margin (%)", "Dividend Yield (%)"],
     ticker: [stock_data["ROE"], stock_data["ProfitMargin"], stock_data["DividendYield"]],
@@ -154,7 +155,7 @@ roe_df = pd.DataFrame({
 st.bar_chart(roe_df)
 
 
-# --- Profit Margin Chart ---
+# Profit margin comparison
 st.write("**Profit Margin (%)**")
 pm_diff = round(stock_data["ProfitMargin"] - bench["ProfitMargin"], 2)
 if pm_diff > 0:
@@ -170,7 +171,7 @@ pm_df = pd.DataFrame({
 st.bar_chart(pm_df)
 
 
-# --- Dividend Yield Chart ---
+# Dividend yield chart
 st.write("**Dividend Yield (%)**")
 div_diff = round(stock_data["DividendYield"] - bench["DividendYield"], 2)
 if div_diff > 0:
@@ -186,7 +187,7 @@ div_df = pd.DataFrame({
 st.bar_chart(div_df)
 
 
-# --- Risk Table & Chart ---
+# Risk table and chart
 st.subheader("Risk")
 
 # Table
@@ -197,7 +198,7 @@ risk_df = pd.DataFrame({
 }).set_index("Metric")
 st.dataframe(risk_df)
 
-# --- Beta chart ---
+# Beta chart
 st.write("**Beta (Volatility vs Market)**")
 beta_diff = round(stock_data["Beta"] - bench["Beta"], 2)
 if beta_diff > 0:
