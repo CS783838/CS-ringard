@@ -41,7 +41,21 @@ else:
     except Exception as e:
         st.error("❌ Error fetching data. Please try another ticker.")
 
+# Progress indicator and shortcut
 if st.session_state.get("ticker"):
     st.info("✅ Next step: Go to the sidebar and select your desired analysis page.")
     if st.button("Go to YTD Performance"):
         st.switch_page("pages/YTD_Tracking.py")  # Make sure page name matches
+
+# Recent tickets viewed
+if "recent_tickers" not in st.session_state:
+    st.session_state["recent_tickers"] = []
+
+if ticker and ticker not in st.session_state["recent_tickers"]:
+    st.session_state["recent_tickers"].insert(0, ticker)
+    st.session_state["recent_tickers"] = st.session_state["recent_tickers"][:5]  # keep last 5
+
+if st.session_state["recent_tickers"]:
+    st.markdown("**Recently searched tickers:**")
+    st.write(st.session_state["recent_tickers"])
+
