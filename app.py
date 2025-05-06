@@ -44,4 +44,4 @@ else:
 if st.session_state.get("ticker"):
     st.info("✅ Next step: Go to the sidebar and select your desired analysis page.")
     if st.button("Go to YTD Performance"):
-        st.switch_page("pages/YTD Tracking.py")  # Make sure page name matches
+        st.switch_page("pages/YTD_Tracking.py")  # Make sure page name matches
