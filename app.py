@@ -58,8 +58,11 @@ if ticker and ticker not in st.session_state["recent_tickers"]:
 if st.session_state["recent_tickers"]:
     st.markdown("**Recently searched tickers:**")
 
-    for ticker in st.session_state["recent_tickers"]:
-        if st.button(ticker):
-            st.session_state["ticker"] = ticker
-            st.success(f"✅ {ticker} selected!")
+    cols = st.columns(len(st.session_state["recent_tickers"]))
+
+    for i, ticker in enumerate(st.session_state["recent_tickers"]):
+        with cols[i]:
+            if st.button(ticker):
+                st.session_state["ticker"] = ticker
+                st.success(f"✅ {ticker} selected!")
 
