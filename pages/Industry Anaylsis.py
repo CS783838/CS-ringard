@@ -83,12 +83,12 @@ bench = INDUSTRY_BENCHMARKS[sector]
 
 # Convert and round metrics for better comparison
 stock_data = {
-    "PE_Ratio": round(stock_pe, 2) if stock_pe else None,
-    "MarketCap_B": round(stock_mc / 1e9, 2) if stock_mc else None,
-    "ROE": round(stock_roe * 100, 2) if stock_roe else None,
-    "ProfitMargin": round(stock_margin * 100, 2) if stock_margin else None,
-    "DividendYield": round(stock_div * 100, 2) if stock_div else None,
-    "Beta": round(stock_beta, 2) if stock_beta else None
+    "PE_Ratio": round(float(stock_pe), 2) if stock_pe is not None else None,
+    "MarketCap_B": round(float(stock_mc) / 1e9, 2) if stock_mc is not None else None,
+    "ROE": round(float(stock_roe) * 100, 2) if stock_roe is not None else None,
+    "ProfitMargin": round(float(stock_margin) * 100, 2) if stock_margin is not None else None,
+    "DividendYield": round(float(stock_div) * 100, 2) if stock_div is not None else None,
+    "Beta": round(float(stock_beta), 2) if stock_beta is not None else None
 }
 
 st.markdown(f"**Sector:** {sector}")
