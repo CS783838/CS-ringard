@@ -32,9 +32,12 @@ else:
 
 # Validate ticker
     try:
-        data = yf.Ticker(st.session_state["ticker"]).info
-        if data['regularMarketPrice'] is not None:
-            st.success(f"✅ Currently analyzing: **{st.session_state['ticker']}**")
-    except:
+    data = yf.Ticker(st.session_state["ticker"]).info
+
+    if data and "regularMarketPrice" in data and data["regularMarketPrice"] is not None:
+        st.success(f"✅ Valid ticker: **{st.session_state['ticker']}**")
+    else:
         st.error("❌ Invalid ticker, please try again.")
+except Exception as e:
+    st.error("❌ Error fetching data. Please try another ticker.")
 
