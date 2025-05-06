@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 st.title("Industry Comparison")
 
-# Dictionnary of sectors with benchmarks for easy comparison
+# Dictionnary of sectors with benchmarks for easy comparison (using online sources)
 INDUSTRY_BENCHMARKS = {
     "Technology": {
         "PE_Ratio": 27.5, "MarketCap_B": 500,
