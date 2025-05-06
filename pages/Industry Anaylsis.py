@@ -87,7 +87,7 @@ stock_data = {
     "MarketCap_B": round(float(stock_mc) / 1e9, 2) if stock_mc is not None else None,
     "ROE": round(float(stock_roe) * 100, 2) if stock_roe is not None else None,
     "ProfitMargin": round(float(stock_margin) * 100, 2) if stock_margin is not None else None,
-    "DividendYield": round(float(stock_div) * 100, 2) if stock_div is not None else None,
+    "DividendYield": round(float(stock_div), 2) if stock_div is not None else None,
     "Beta": round(float(stock_beta), 2) if stock_beta is not None else None
 }
 
