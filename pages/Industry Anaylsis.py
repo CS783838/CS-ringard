@@ -139,6 +139,7 @@ profit_df = pd.DataFrame({
 st.dataframe(profit_df)
 
 # --- ROE Chart ---
+st.write("**Return on Equity (ROE %)**")
 roe_diff = round(stock_data["ROE"] - bench["ROE"], 2)
 if roe_diff > 0:
     st.markdown(f"<span style='color:green'>{ticker} is {roe_diff}% above the industry average.</span>", unsafe_allow_html=True)
@@ -147,7 +148,6 @@ elif roe_diff < 0:
 else:
     st.markdown(f"{ticker} is exactly in line with the industry average.")
 
-st.write("**Return on Equity (ROE %)**")
 roe_df = pd.DataFrame({
     "ROE (%)": [stock_data["ROE"], bench["ROE"]]
 }, index=[ticker, f"{sector} Avg"])
@@ -155,6 +155,7 @@ st.bar_chart(roe_df)
 
 
 # --- Profit Margin Chart ---
+st.write("**Profit Margin (%)**")
 pm_diff = round(stock_data["ProfitMargin"] - bench["ProfitMargin"], 2)
 if pm_diff > 0:
     st.markdown(f"<span style='color:green'>{ticker} has a profit margin {pm_diff}% above the industry average.</span>", unsafe_allow_html=True)
@@ -163,7 +164,6 @@ elif pm_diff < 0:
 else:
     st.markdown(f"{ticker}'s profit margin is exactly at the industry average.")
 
-st.write("**Profit Margin (%)**")
 pm_df = pd.DataFrame({
     "Profit Margin (%)": [stock_data["ProfitMargin"], bench["ProfitMargin"]]
 }, index=[ticker, f"{sector} Avg"])
@@ -171,6 +171,7 @@ st.bar_chart(pm_df)
 
 
 # --- Dividend Yield Chart ---
+st.write("**Dividend Yield (%)**")
 div_diff = round(stock_data["DividendYield"] - bench["DividendYield"], 2)
 if div_diff > 0:
     st.markdown(f"<span style='color:green'>{ticker} offers a dividend yield {div_diff}% above the industry average.</span>", unsafe_allow_html=True)
@@ -179,7 +180,6 @@ elif div_diff < 0:
 else:
     st.markdown(f"{ticker}'s dividend yield is exactly in line with the industry average.")
 
-st.write("**Dividend Yield (%)**")
 div_df = pd.DataFrame({
     "Dividend Yield (%)": [stock_data["DividendYield"], bench["DividendYield"]]
 }, index=[ticker, f"{sector} Avg"])
