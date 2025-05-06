@@ -57,5 +57,8 @@ if ticker and ticker not in st.session_state["recent_tickers"]:
 
 if st.session_state["recent_tickers"]:
     st.markdown("**Recently searched tickers:**")
-    st.write(st.session_state["recent_tickers"])
+
+if st.session_state["recent_tickers"]:
+    for ticker in st.session_state["recent_tickers"]:
+        st.markdown(f"- 🎯 **{ticker}**")
 
