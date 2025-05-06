@@ -61,10 +61,10 @@ if st.session_state["recent_tickers"]:
     for ticker in st.session_state["recent_tickers"]:
         if st.button(ticker):
             st.session_state["ticker"] = ticker
-            st.experimental_rerun()
+            for ticker in st.session_state["recent_tickers"]:
+         if st.button(ticker):
+            st.session_state["ticker"] = ticker
+            st.success(f"✅ {ticker} selected!")
 
 
-if st.session_state["recent_tickers"]:
-    for ticker in st.session_state["recent_tickers"]:
-        st.markdown(f"- 🎯 **{ticker}**")
 
