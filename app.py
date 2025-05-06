@@ -40,4 +40,4 @@ else:
         st.error("❌ Invalid ticker, please try again.")
     except Exception as e:
     st.error("❌ Error fetching data. Please try another ticker.")
-
+    
