@@ -130,43 +130,58 @@ st.bar_chart(mc_df)
 
 st.subheader("Profitability & Dividend Yield")
 
-# Table
+# Table (keep as-is)
 profit_df = pd.DataFrame({
     "Metric": ["ROE (%)", "Profit Margin (%)", "Dividend Yield (%)"],
     ticker: [stock_data["ROE"], stock_data["ProfitMargin"], stock_data["DividendYield"]],
     f"{sector} Avg": [bench["ROE"], bench["ProfitMargin"], bench["DividendYield"]]
 }).set_index("Metric")
-
 st.dataframe(profit_df)
 
-# Chart function
-def draw_single_bar(metric_name, stock_value, industry_value, unit="%"):
-    import matplotlib.pyplot as plt
+# --- ROE Chart ---
+st.write("**Return on Equity (ROE %)**")
+roe_df = pd.DataFrame({
+    "ROE (%)": [stock_data["ROE"], bench["ROE"]]
+}, index=[ticker, f"{sector} Avg"])
+st.bar_chart(roe_df)
 
-    color = "green" if stock_value >= industry_value else "red"
-    diff = round(stock_value - industry_value, 2)
+roe_diff = round(stock_data["ROE"] - bench["ROE"], 2)
+if roe_diff > 0:
+    st.markdown(f"<span style='color:green'>{ticker} is {roe_diff}% above the industry average.</span>", unsafe_allow_html=True)
+elif roe_diff < 0:
+    st.markdown(f"<span style='color:red'>{ticker} is {abs(roe_diff)}% below the industry average.</span>", unsafe_allow_html=True)
+else:
+    st.markdown(f"{ticker} is exactly in line with the industry average.")
 
-    fig, ax = plt.subplots(figsize=(4, 1.2))
-    ax.barh([f"{sector} Avg"], [industry_value], color="lightgray", label="Industry Avg")
-    ax.barh([ticker], [stock_value], color=color, label=ticker)
-    ax.set_xlim(0, max(stock_value, industry_value) * 1.2)
-    ax.set_title(metric_name)
-    ax.legend()
-    st.pyplot(fig)
+# --- Profit Margin Chart ---
+st.write("**Profit Margin (%)**")
+pm_df = pd.DataFrame({
+    "Profit Margin (%)": [stock_data["ProfitMargin"], bench["ProfitMargin"]]
+}, index=[ticker, f"{sector} Avg"])
+st.bar_chart(pm_df)
 
-    # Difference summary
-    if diff > 0:
-        st.markdown(f"<span style='color:green'>{ticker} is {diff}{unit} above the industry average.</span>", unsafe_allow_html=True)
-    elif diff < 0:
-        st.markdown(f"<span style='color:red'>{ticker} is {abs(diff)}{unit} below the industry average.</span>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"{ticker} is exactly in line with the industry average.")
+pm_diff = round(stock_data["ProfitMargin"] - bench["ProfitMargin"], 2)
+if pm_diff > 0:
+    st.markdown(f"<span style='color:green'>{ticker} has a profit margin {pm_diff}% above the industry average.</span>", unsafe_allow_html=True)
+elif pm_diff < 0:
+    st.markdown(f"<span style='color:red'>{ticker} has a profit margin {abs(pm_diff)}% below the industry average.</span>", unsafe_allow_html=True)
+else:
+    st.markdown(f"{ticker}'s profit margin is exactly at the industry average.")
 
-# Draw one chart per metric
-draw_single_bar("ROE (%)", stock_data["ROE"], bench["ROE"])
-draw_single_bar("Profit Margin (%)", stock_data["ProfitMargin"], bench["ProfitMargin"])
-draw_single_bar("Dividend Yield (%)", stock_data["DividendYield"], bench["DividendYield"])
+# --- Dividend Yield Chart ---
+st.write("**Dividend Yield (%)**")
+div_df = pd.DataFrame({
+    "Dividend Yield (%)": [stock_data["DividendYield"], bench["DividendYield"]]
+}, index=[ticker, f"{sector} Avg"])
+st.bar_chart(div_df)
 
+div_diff = round(stock_data["DividendYield"] - bench["DividendYield"], 2)
+if div_diff > 0:
+    st.markdown(f"<span style='color:green'>{ticker} offers a dividend yield {div_diff}% above the industry average.</span>", unsafe_allow_html=True)
+elif div_diff < 0:
+    st.markdown(f"<span style='color:red'>{ticker}'s dividend yield is {abs(div_diff)}% below the industry average.</span>", unsafe_allow_html=True)
+else:
+    st.markdown(f"{ticker}'s dividend yield is exactly in line with the industry average.")
 # --- Risk Table & Chart ---
 risk_df = pd.DataFrame({
     "Metric": ["Beta"],
