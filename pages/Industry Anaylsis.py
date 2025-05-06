@@ -149,3 +149,4 @@ risk_df = pd.DataFrame({
 st.subheader("Risk")
 st.dataframe(risk_df)
 st.bar_chart(risk_df)
+

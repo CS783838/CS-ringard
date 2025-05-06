@@ -29,3 +29,12 @@ if st.session_state.get("ticker"):
     st.info(f"Currently analyzing: **{st.session_state['ticker']}**")
 else:
     st.warning("Please enter a valid stock ticker to get started.")
+
+# Validate ticker
+    try:
+        data = yf.Ticker(st.session_state["ticker"]).info
+        if data['regularMarketPrice'] is not None:
+            st.success(f"✅ Currently analyzing: **{st.session_state['ticker']}**")
+    except:
+        st.error("❌ Invalid ticker, please try again.")
+
