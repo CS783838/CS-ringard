@@ -10,7 +10,7 @@ if not ticker_input:
     st.stop()
 
 # ----------------- NEWS SECTION -----------------
-st.header("Latest News")
+st.header("📰 Latest News")
 
 articles = []
 
