@@ -118,4 +118,10 @@ else:
 
     st.pyplot(fig)
 
-    
+# User Guide
+with st.expander("ℹ️ How to use this page"):
+    st.write("""
+    - Browse between Valuation, Profitability, Risk/Dividend and Earnings using the tabs below.
+    - Figures highlighted in green are positive or good metrics.
+    - Figures in red highlight potentially negative or risky metrics.
+    """)
