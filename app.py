@@ -10,6 +10,8 @@ st.sidebar.page_link("pages/Key_Figures.py", label="📈 Key Figures")
 st.sidebar.page_link("pages/Stock_News.py", label="📰 Stock News")
 st.sidebar.page_link("pages/YTD_Tracking.py", label="📅 YTD Tracking")
 
+st.title("Welcome to the Trade Zone")
+
 # Welcome text
 st.markdown(
     """
