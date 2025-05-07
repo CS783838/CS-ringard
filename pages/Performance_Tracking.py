@@ -3,7 +3,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime
 
-st.title("YTD Performance & Comparison")
+st.title("Stock Performance & Comparison")
 
 # Gets ticker from homepage
 ticker_input = st.session_state.get("ticker", "").strip().upper()
@@ -35,7 +35,7 @@ if stock_data.empty:
     st.stop()
 
 # 1st Chart: YTD performance of entered stock
-st.subheader("YTD Performance")
+st.subheader("Past Performance")
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(stock_data.index, stock_data['Close'], label='Closing Price', color='blue')
 ax.set_title(f"{ticker_input} Stock Closing Prices (Past Year)")
@@ -66,7 +66,7 @@ if compare:
             comp_norm = comp_data['Close'] / comp_data['Close'].iloc[0] * 100
 
             # generates second chart with both tickers
-            st.subheader(f"YTD Comparison: {ticker_input} vs {comparison_ticker}")
+            st.subheader(f"Performance Comparison: {ticker_input} vs {comparison_ticker}")
             fig2, ax2 = plt.subplots(figsize=(10, 6))
             ax2.plot(stock_data.index, stock_norm, label=f"{ticker_input} (Normalized)", color='blue')
             ax2.plot(comp_data.index, comp_norm, label=f"{comparison_ticker} (Normalized)", color='orange')
