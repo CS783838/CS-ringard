@@ -1,4 +1,5 @@
 import streamlit as st
+import yfinance as yf
 
 st.set_page_config(page_title="Stock Dashboard", layout="wide")
 st.sidebar.markdown("⬆ Dashboard Navigation ⬆")
