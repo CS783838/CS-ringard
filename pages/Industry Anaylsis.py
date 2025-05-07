@@ -3,7 +3,7 @@ import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
 
-st.title("Industry Comparison")
+st.title("🏭 Industry Comparison")
 
 # Dictionnary of sectors with benchmarks for easy comparison (using online sources)
 INDUSTRY_BENCHMARKS = {
