@@ -4,7 +4,8 @@ import requests
 import matplotlib.pyplot as plt
 import numpy as np
 
-st.title("📊 Key Figures Overview")
+st.title("Key Figures Overview")
+st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
 # API Keys 
 ALPHA_VANTAGE_API_KEY = "KQ8EAFY3QFMIN54B"

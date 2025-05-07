@@ -3,7 +3,8 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime
 
-st.title("📈 YTD Performance & Comparison")
+st.title("YTD Performance & Comparison")
+st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
 # Gets ticker from homepage
 ticker_input = st.session_state.get("ticker", "").strip().upper()
@@ -38,34 +39,66 @@ ax.legend()
 ax.grid()
 st.pyplot(fig)
 
+st.subheader("Year-To-Date (YTD) Performance Summary")
+
+# Calculate YTD return for main ticker
+ytd_return_main = (stock_data['Close'].iloc[-1] - stock_data['Close'].iloc[0]) / stock_data['Close'].iloc[0] * 100
+ytd_return_main = float(ytd_return_main)
+
+# Determine color and symbol
+main_color = "green" if ytd_return_main >= 0 else "red"
+main_symbol = "+" if ytd_return_main >= 0 else "-"
+st.markdown(f"<span style='color:{main_color}'><b>{ticker_input}:</b> {main_symbol}{abs(ytd_return_main):.2f}%</span>", unsafe_allow_html=True)
+
+# If comparison data exists
+if 'comp_data' in locals() and not comp_data.empty:
+    ytd_return_comp = (comp_data['Close'].iloc[-1] - comp_data['Close'].iloc[0]) / comp_data['Close'].iloc[0] * 100
+    ytd_return_comp = float(ytd_return_comp)
+
+    comp_color = "green" if ytd_return_comp >= 0 else "red"
+    comp_symbol = "+" if ytd_return_comp >= 0 else "-"
+    st.markdown(f"<span style='color:{comp_color}'><b>{comparison_ticker}:</b> {comp_symbol}{abs(ytd_return_comp):.2f}%</span>", unsafe_allow_html=True)
+
+
+
+
 # 2nd Chart: Compares desired stock with another ticker
-compare = st.checkbox("Compare with another ticker", value=True)
+st.markdown("### Comparison Mode")
 
-if compare:
-    comparison_ticker = st.text_input("Enter a comparison ticker (e.g., SPY, QQQ, MSFT):", value="SPY").strip().upper()
-    # Get second ticker's data from yfinance
-    if comparison_ticker:
-        try:
-            comp_data = yf.download(comparison_ticker, start=one_year_ago, end=today)
-        except Exception as e:
-            st.error(f"Error fetching data for {comparison_ticker}: {e}")
-            st.stop()
+compare_mode = st.radio("Select Comparison Mode:", ["None", "Compare with famous ticker", "Custom ticker"])
 
-        if comp_data.empty:
-            st.error(f"No data found for {comparison_ticker}.")
-        else:
-            # normalizes both to 100 for proper comparison
-            stock_norm = stock_data['Close'] / stock_data['Close'].iloc[0] * 100
-            comp_norm = comp_data['Close'] / comp_data['Close'].iloc[0] * 100
+comparison_ticker = None
 
-            # generates second chart with both tickers
-            st.subheader(f"YTD Comparison: {ticker_input} vs {comparison_ticker}")
-            fig2, ax2 = plt.subplots(figsize=(10, 6))
-            ax2.plot(stock_data.index, stock_norm, label=f"{ticker_input} (Normalized)", color='blue')
-            ax2.plot(comp_data.index, comp_norm, label=f"{comparison_ticker} (Normalized)", color='orange')
-            ax2.set_xlabel("Date")
-            ax2.set_ylabel("Normalized Price (Start = 100)")
-            ax2.set_title(f"{ticker_input} vs {comparison_ticker} - YTD Performance")
-            ax2.legend()
-            ax2.grid()
-            st.pyplot(fig2)
+if compare_mode == "Compare with famous ticker":
+    comparison_ticker = st.selectbox("Select a comparison ticker:", ["SPY", "QQQ", "MSFT", "AAPL", "META", "AMZN"])
+
+elif compare_mode == "Custom ticker":
+    comparison_ticker = st.text_input("Enter a custom ticker:")
+
+if comparison_ticker:
+    comparison_ticker = comparison_ticker.strip().upper()
+    try:
+        comp_data = yf.download(comparison_ticker, start=one_year_ago, end=today)
+    except Exception as e:
+        st.error(f"Error fetching data for {comparison_ticker}: {e}")
+        st.stop()
+
+    if comp_data.empty:
+        st.error(f"No data found for {comparison_ticker}.")
+    else:
+        # Normalize both stocks
+        stock_norm = stock_data['Close'] / stock_data['Close'].iloc[0] * 100
+        comp_norm = comp_data['Close'] / comp_data['Close'].iloc[0] * 100
+
+        # Comparison chart
+        st.subheader(f"YTD Comparison: {ticker_input} vs {comparison_ticker}")
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        ax2.plot(stock_data.index, stock_norm, label=f"{ticker_input} (Normalized)", color='blue')
+        ax2.plot(comp_data.index, comp_norm, label=f"{comparison_ticker} (Normalized)", color='orange')
+        ax2.set_xlabel("Date")
+        ax2.set_ylabel("Normalized Price (Start = 100)")
+        ax2.set_title(f"{ticker_input} vs {comparison_ticker} - YTD Performance")
+        ax2.legend()
+        ax2.grid()
+        st.pyplot(fig2)
+

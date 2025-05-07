@@ -42,10 +42,6 @@ else:
     except Exception as e:
         st.error("❌ Error fetching data. Please try another ticker.")
 
-# Progress indicator and shortcut
-if st.session_state.get("ticker"):
-    st.info("✅ Next step: Go to the sidebar and select your desired analysis page.")
-
 # Recent tickets viewed
 if "recent_tickers" not in st.session_state:
     st.session_state["recent_tickers"] = []
@@ -62,3 +58,11 @@ if st.session_state["recent_tickers"]:
             st.session_state["ticker"] = ticker
             st.success(f"✅ {ticker} selected!")
 
+# Onboarding tips expander
+with st.expander("ℹ️ How to use this page"):
+    st.write("""
+        - Enter a valid stock ticker in the input box
+        - Navigate using the sidebar
+        - Use the recent tickers for quick access
+        - Explore YTD, Key Figures and Competitors, News, Dates and more
+    """)
