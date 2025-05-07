@@ -12,13 +12,20 @@ if not ticker_input:
     st.warning("Please enter a stock ticker on the homepage first.")
     st.stop()
 
-# Initializes date variables for YTD calculation
+# Date range selection
+st.subheader("Select Time Range")
 today = datetime.date.today()
-one_year_ago = today - datetime.timedelta(days=365)
+
+start_date = st.date_input("Start Date", value=today - datetime.timedelta(days=365))
+end_date = st.date_input("End Date", value=today)
+
+if start_date >= end_date:
+    st.error("Start date must be before end date.")
+    st.stop()
 
 # Get stock data from the pervious year with yfinance
 try:
-    stock_data = yf.download(ticker_input, start=one_year_ago, end=today)
+    stock_data = yf.download(ticker_input, start=start_date, end=end_date)
 except Exception as e:
     st.error(f"Error fetching data for {ticker_input}: {e}")
     st.stop()
@@ -46,7 +53,7 @@ if compare:
     # Get second ticker's data from yfinance
     if comparison_ticker:
         try:
-            comp_data = yf.download(comparison_ticker, start=one_year_ago, end=today)
+            comp_data = yf.download(comparison_ticker, start=start_date, end=end_date)
         except Exception as e:
             st.error(f"Error fetching data for {comparison_ticker}: {e}")
             st.stop()
