@@ -3,7 +3,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime
 
-st.title("YTD Performance & Comparison")
+st.title("📈 YTD Performance & Comparison")
 
 # Gets ticker from homepage
 ticker_input = st.session_state.get("ticker", "").strip().upper()
