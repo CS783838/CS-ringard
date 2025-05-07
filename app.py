@@ -1,16 +1,9 @@
 import streamlit as st
 
-st.set_page_config(page_title="Stock Dashboard", layout="wide", initial_sidebar_state="expanded")
-st.sidebar.title("📊 Dashboard Navigation")
+st.set_page_config(page_title="Stock Dashboard", layout="wide")
+st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
-# This will replace the default page selector
-st.sidebar.page_link("app.py", label="🏠 Home")
-st.sidebar.page_link("pages/Industry_Analysis.py", label="🏭 Industry Analysis")
-st.sidebar.page_link("pages/Key_Figures.py", label="📈 Key Figures")
-st.sidebar.page_link("pages/Stock_News.py", label="📰 Stock News")
-st.sidebar.page_link("pages/YTD_Tracking.py", label="📅 YTD Tracking")
-
-st.title("Welcome to the Trade Zone")
+st.title("🏠 Welcome to the Trade Zone")
 
 # Welcome text
 st.markdown(
@@ -18,9 +11,9 @@ st.markdown(
     This dashboard helps you explore the financial performance of public companies using real-time market data.
 
     **To begin**, enter a US stock ticker below, then navigate through the analysis pages using the sidebar:
-    -  **YTD Performance**
+    -  **Industry Analysis**
     -  **Key Figures**
-    -  **Competitor Analysis**
+    -  **YTD Tracking**
     """
 )
 
@@ -69,10 +62,3 @@ if st.session_state["recent_tickers"]:
             st.session_state["ticker"] = ticker
             st.success(f"✅ {ticker} selected!")
 
-# st.sidebar.title("📊 Navigation")
-with st.sidebar.expander("Stock Analysis"):
-    st.page_link("pages/YTD_Tracking.py", label="📈 YTD Performance")
-    st.page_link("pages/Key_Figures.py", label="📊 Key Figures")
-    st.page_link("pages/Industry_Analysis.py", label="🏭 Industry Analysis")
-    st.sidebar.page_link("pages/Stock_News.py", label="📰 Stock News")
-    st.sidebar.page_link("pages/YTD_Tracking.py", label="📅 YTD Tracking")
