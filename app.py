@@ -63,3 +63,11 @@ if st.session_state["recent_tickers"]:
             st.session_state["ticker"] = ticker
             st.success(f"✅ {ticker} selected!")
 
+# st.sidebar.title("📊 Navigation")
+
+with st.sidebar.expander("Stock Analysis"):
+    st.page_link("pages/YTD_Tracking.py", label="📈 YTD Performance")
+    st.page_link("pages/Key_Figures.py", label="📊 Key Figures")
+    st.page_link("pages/Industry_Analysis.py", label="🏭 Industry Analysis")
+    st.sidebar.page_link("pages/Stock_News.py", label="📰 Stock News")
+    st.sidebar.page_link("pages/YTD_Tracking.py", label="📅 YTD Tracking")
