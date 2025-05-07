@@ -1,8 +1,9 @@
 import streamlit as st
 
 st.set_page_config(page_title="Stock Dashboard", layout="wide")
+st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
-st.title("Welcome to the Trade Zone")
+st.title("🏠 Welcome to the Trade Zone")
 
 # Welcome text
 st.markdown(
@@ -10,9 +11,9 @@ st.markdown(
     This dashboard helps you explore the financial performance of public companies using real-time market data.
 
     **To begin**, enter a US stock ticker below, then navigate through the analysis pages using the sidebar:
-    -  **YTD Performance**
+    -  **Industry Analysis**
     -  **Key Figures**
-    -  **Competitor Analysis**
+    -  **YTD Tracking**
     """
 )
 
@@ -44,8 +45,6 @@ else:
 # Progress indicator and shortcut
 if st.session_state.get("ticker"):
     st.info("✅ Next step: Go to the sidebar and select your desired analysis page.")
-    if st.button("Go to YTD Performance"):
-        st.switch_page("pages/YTD_Tracking.py")  # Make sure page name matches
 
 # Recent tickets viewed
 if "recent_tickers" not in st.session_state:
@@ -62,3 +61,4 @@ if st.session_state["recent_tickers"]:
         if st.button(ticker):
             st.session_state["ticker"] = ticker
             st.success(f"✅ {ticker} selected!")
+
