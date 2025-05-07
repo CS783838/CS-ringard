@@ -1,9 +1,9 @@
 import streamlit as st
 
 st.set_page_config(page_title="Stock Dashboard", layout="wide")
-st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
+st.sidebar.markdown("⬆ Dashboard Navigation ⬆")
 
-st.title("🏠 Welcome to the Trade Zone")
+st.title("Welcome to the Trade Zone")
 
 # Welcome text
 st.markdown(
@@ -36,15 +36,15 @@ else:
         data = yf.Ticker(st.session_state["ticker"]).info
 
         if data and "regularMarketPrice" in data and data["regularMarketPrice"] is not None:
-            st.success(f"✅ Valid ticker: **{st.session_state['ticker']}**")
+            st.success(f"Valid ticker: **{st.session_state['ticker']}**")
         else:
-            st.error("❌ Invalid ticker, please try again.")
+            st.error("Invalid ticker, please try again.")
     except Exception as e:
-        st.error("❌ Error fetching data. Please try another ticker.")
+        st.error("Error fetching data. Please try another ticker.")
 
 # Progress indicator and shortcut
 if st.session_state.get("ticker"):
-    st.info("✅ Next step: Go to the sidebar and select your desired analysis page.")
+    st.info("Next step: Go to the sidebar and select your desired analysis page.")
 
 # Recent tickets viewed
 if "recent_tickers" not in st.session_state:
@@ -60,5 +60,5 @@ if st.session_state["recent_tickers"]:
     for ticker in st.session_state["recent_tickers"]:
         if st.button(ticker):
             st.session_state["ticker"] = ticker
-            st.success(f"✅ {ticker} selected!")
+            st.success(f"{ticker} selected!")
 
