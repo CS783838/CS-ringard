@@ -44,8 +44,6 @@ else:
 # Progress indicator and shortcut
 if st.session_state.get("ticker"):
     st.info("✅ Next step: Go to the sidebar and select your desired analysis page.")
-    if st.button("Go to YTD Performance"):
-        st.switch_page("pages/YTD_Tracking.py")  # Make sure page name matches
 
 # Recent tickets viewed
 if "recent_tickers" not in st.session_state:
@@ -64,7 +62,6 @@ if st.session_state["recent_tickers"]:
             st.success(f"✅ {ticker} selected!")
 
 # st.sidebar.title("📊 Navigation")
-
 with st.sidebar.expander("Stock Analysis"):
     st.page_link("pages/YTD_Tracking.py", label="📈 YTD Performance")
     st.page_link("pages/Key_Figures.py", label="📊 Key Figures")
