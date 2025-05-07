@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from datetime import datetime
 
-st.title("Stock News")
+st.title("Latest News")
 st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
 # Gets ticker from homepage
@@ -14,7 +14,6 @@ if not ticker_input:
 
 
 # ----------------- NEWS SECTION -----------------
-st.header("📰 Latest News")
 
 articles = []
 
