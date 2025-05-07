@@ -16,6 +16,7 @@ if not ticker_input:
 st.subheader("Select Time Range")
 today = datetime.date.today()
 
+# User inputs dates, they are set to YTD by default
 start_date = st.date_input("Start Date", value=today - datetime.timedelta(days=365))
 end_date = st.date_input("End Date", value=today)
 
@@ -23,7 +24,7 @@ if start_date >= end_date:
     st.error("Start date must be before end date.")
     st.stop()
 
-# Get stock data from the pervious year with yfinance
+# Get stock data from the desired time window with yfinance
 try:
     stock_data = yf.download(ticker_input, start=start_date, end=end_date)
 except Exception as e:
@@ -50,7 +51,7 @@ compare = st.checkbox("Compare with another ticker", value=True)
 
 if compare:
     comparison_ticker = st.text_input("Enter a comparison ticker (e.g., SPY, QQQ, MSFT):", value="SPY").strip().upper()
-    # Get second ticker's data from yfinance
+    # Get second ticker's performance data from yfinance
     if comparison_ticker:
         try:
             comp_data = yf.download(comparison_ticker, start=start_date, end=end_date)
