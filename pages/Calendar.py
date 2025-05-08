@@ -1,6 +1,8 @@
 import streamlit as st
 import yfinance as yf
 from datetime import datetime
+import pandas as pd
+import requests
 
 st.title("Earnings Calendar")
 st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
@@ -18,46 +20,48 @@ past_earnings = [
     {"date": "2025-01-29", "eps": 3.23}
 ]
 
-# User guide
-with st.expander("ℹ️ How to use this page"):
+# User Guide
+with st.expander("How to use this page"):
     st.write("""
-    - Upcoming earnings show estimated dates and EPS (if available).
-    - Past earnings include reported EPS values.
-    - Results are based on the selected company.
+    - Upcoming earnings show estimated report dates and EPS (predicted or N/A).
+    - Past earnings show reported EPS.
+    - Dates are ordered for clarity.
     """)
 
-# UPCOMING EARNINGS
+# UPCOMING EARNINGS TABLE
 st.subheader("Upcoming Earnings")
-#--Sort so earliest date is shown first
-upcoming_earnings_sorted = sorted(upcoming_earnings, key=lambda x: x["date"])
-if upcoming_earnings_sorted:
-    for e in upcoming_earnings_sorted:
-        with st.container():
-            date = e["date"]
-            eps = e["eps"]
-            col1, col2 = st.columns([1, 3])
-            col1.markdown(f"**{date}**")
-            if eps is not None:
-                col2.markdown(f"Estimated EPS: **{eps}**")
-            else:
-                col2.markdown("*Estimated EPS: N/A*", unsafe_allow_html=True)
-            st.divider()
+if upcoming_earnings:
+    upcoming_sorted = sorted(upcoming_earnings, key=lambda x: x["date"])
+    df_upcoming = pd.DataFrame(upcoming_sorted)
+
+    # Add status and format EPS
+    df_upcoming["Status"] = "Upcoming"
+    df_upcoming["Estimated EPS"] = df_upcoming["eps"].apply(lambda x: f"{x:.2f}" if x is not None else "N/A")
+    df_upcoming = df_upcoming.drop(columns=["eps"])
+
+    # Order columns
+    df_upcoming = df_upcoming[["date", "Status", "Estimated EPS"]]
+    df_upcoming.columns = ["Date", "Status", "Estimated EPS"]
+
+    # Display without index
+    st.dataframe(df_upcoming.style.hide(axis="index"), use_container_width=True)
+
 else:
-    st.info("No upcoming earnings data available.")
+    st.info("No upcoming earnings available.")
 
-
-# PAST EARNINGS
+# PAST EARNINGS TABLE
 st.subheader("Past Earnings")
-#--Sort so most recent is first
-past_earnings_sorted = sorted(past_earnings, key=lambda x: x["date"], reverse=True)
-if past_earnings_sorted:
-    for e in past_earnings_sorted:
-        with st.container():
-            date = e["date"]
-            eps = e["eps"]
-            col1, col2 = st.columns([1, 3])
-            col1.markdown(f"**{date}**")
-            col2.markdown(f"Reported EPS: **{eps:.2f}**")
-            st.divider()
+if past_earnings:
+    past_sorted = sorted(past_earnings, key=lambda x: x["date"], reverse=True)
+    df_past = pd.DataFrame(past_sorted)
+
+    df_past["Reported EPS"] = df_past["eps"].apply(lambda x: f"{x:.2f}")
+    df_past = df_past.drop(columns=["eps"])
+    df_past = df_past[["date", "Reported EPS"]]
+    df_past.columns = ["Date", "Reported EPS"]
+
+    # Display without index
+    st.dataframe(df_past.style.hide(axis="index"), use_container_width=True)
+
 else:
-    st.info("No past earnings data available.")
+    st.info("No past earnings available.")
