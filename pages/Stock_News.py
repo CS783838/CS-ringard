@@ -3,7 +3,7 @@ import requests
 from datetime import datetime
 
 st.title("Latest News")
-st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
+st.sidebar.markdown("⬆ Dashboard Navigation ⬆")
 
 # Gets ticker from homepage
 ticker_input = st.session_state.get("ticker", "").strip().upper()

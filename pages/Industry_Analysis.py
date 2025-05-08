@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 st.title("Industry Comparison")
-st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
+st.sidebar.markdown("⬆ Dashboard Navigation ⬆")
 
 with st.expander("ℹ️ How to use this page"):
     st.write("""

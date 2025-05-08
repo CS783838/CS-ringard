@@ -6,7 +6,7 @@ import requests
 
 
 st.title("Earnings Calendar")
-st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
+st.sidebar.markdown("⬆ Dashboard Navigation ⬆")
 
 # Example data
 upcoming_earnings = [

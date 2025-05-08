@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 st.title("Key Figures Overview")
-st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
+st.sidebar.markdown("⬆ Dashboard Navigation ⬆")
 
 # User Guide
 with st.expander("ℹ️ How to use this page"):
