@@ -4,6 +4,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 st.title("Industry Comparison")
+st.sidebar.markdown("⬆ Dashboard Navigation ⬆")
+
+with st.expander("ℹ️ How to use this page"):
+    st.write("""
+    - Enter a stock ticker on the homepage to begin analysis.
+    - View and compare the company's key financial metrics to its industry benchmarks.
+    - Understand how the stock performs in areas like P/E Ratio, Market Cap, ROE, Profit Margin, Dividend Yield, and Risk (Beta).
+    - Green indicates performance above the industry average, while red indicates performance below.
+    - Use the charts and tables to visually analyze where the company stands.
+    """)
 
 # Dictionnary of sectors with benchmarks for easy comparison (using online sources)
 INDUSTRY_BENCHMARKS = {
