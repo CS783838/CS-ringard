@@ -7,6 +7,14 @@ import numpy as np
 st.title("Key Figures Overview")
 st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
+# User Guide
+with st.expander("ℹ️ How to use this page"):
+    st.write("""
+    - Browse between Valuation, Profitability, Risk/Dividend and Earnings using the tabs below.
+    - Figures highlighted in green are positive or good metrics.
+    - Figures in red highlight potentially negative or risky metrics.
+    """)
+
 # API Keys 
 ALPHA_VANTAGE_API_KEY = "KQ8EAFY3QFMIN54B"
 ALPHA_VANTAGE_URL = "https://www.alphavantage.co/query"
@@ -117,11 +125,3 @@ else:
     ax.legend()
 
     st.pyplot(fig)
-
-# User Guide
-with st.expander("ℹ️ How to use this page"):
-    st.write("""
-    - Browse between Valuation, Profitability, Risk/Dividend and Earnings using the tabs below.
-    - Figures highlighted in green are positive or good metrics.
-    - Figures in red highlight potentially negative or risky metrics.
-    """)

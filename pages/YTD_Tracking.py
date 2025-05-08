@@ -6,6 +6,15 @@ import datetime
 st.title("YTD Performance & Comparison")
 st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
+with st.expander("ℹ️ How to use this page"):
+    st.write("""
+    - Enter or select a stock ticker from the homepage to begin.
+    - View the stock's Year-To-Date (YTD) price performance chart.
+    - Compare the selected stock's performance with popular indices or custom tickers.
+    - Check the summary for positive or negative performance indicators.
+    - Use the comparison feature to understand relative performance.
+    """)
+
 # Gets ticker from homepage
 ticker_input = st.session_state.get("ticker", "").strip().upper()
 

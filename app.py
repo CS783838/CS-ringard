@@ -57,12 +57,3 @@ if st.session_state["recent_tickers"]:
         if st.button(ticker):
             st.session_state["ticker"] = ticker
             st.success(f"✅ {ticker} selected!")
-
-# Onboarding tips expander
-with st.expander("ℹ️ How to use this page"):
-    st.write("""
-        - Enter a valid stock ticker in the input box
-        - Navigate using the sidebar
-        - Use the recent tickers for quick access
-        - Explore YTD, Key Figures and Competitors, News, Dates and more
-    """)

@@ -4,6 +4,7 @@ from datetime import datetime
 import pandas as pd
 import requests
 
+
 st.title("Earnings Calendar")
 st.sidebar.markdown("⬆️ Dashboard Navigation ⬆️")
 
@@ -21,7 +22,7 @@ past_earnings = [
 ]
 
 # User Guide
-with st.expander("How to use this page"):
+with st.expander("ℹ️ How to use this page"):
     st.write("""
     - Upcoming earnings show estimated report dates and EPS (predicted or N/A).
     - Past earnings show reported EPS.
@@ -43,8 +44,8 @@ if upcoming_earnings:
     df_upcoming = df_upcoming[["date", "Status", "Estimated EPS"]]
     df_upcoming.columns = ["Date", "Status", "Estimated EPS"]
 
-    # Display without index
-    st.dataframe(df_upcoming.style.hide(axis="index"), use_container_width=True)
+    # Display table
+    st.table(df_upcoming.reset_index(drop=True))
 
 else:
     st.info("No upcoming earnings available.")
@@ -60,8 +61,8 @@ if past_earnings:
     df_past = df_past[["date", "Reported EPS"]]
     df_past.columns = ["Date", "Reported EPS"]
 
-    # Display without index
-    st.dataframe(df_past.style.hide(axis="index"), use_container_width=True)
+    # Display table
+    st.table(df_past.reset_index(drop=True))
 
 else:
     st.info("No past earnings available.")
