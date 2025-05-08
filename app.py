@@ -57,3 +57,4 @@ if st.session_state["recent_tickers"]:
         if st.button(ticker):
             st.session_state["ticker"] = ticker
             st.success(f"✅ {ticker} selected!")
+
