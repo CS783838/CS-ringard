@@ -71,7 +71,7 @@ try:
     stock_div = info.get("dividendYield")
     stock_beta = info.get("beta")
 except:
-    st.error("Failed to fetch data from yfinance.")
+    st.error("Data temporarily unavailable due to API limits. Please try again later.")
     st.stop()
 
 # Error if theres no sector / its not in the dictionnary
