@@ -12,9 +12,7 @@ if not ticker_input:
     st.warning("Please enter a stock ticker on the homepage first.")
     st.stop()
 
-
 # ----------------- NEWS SECTION -----------------
-
 articles = []
 
 if st.session_state.get("ticker"):
@@ -37,20 +35,7 @@ if st.session_state.get("ticker"):
     else:
         st.error("Failed to fetch Finnhub news.")
 
-    # Sortiere alle Artikel nach Datum (neueste zuerst)
     articles.sort(key=lambda x: x["datetime"], reverse=True)
-
-    # Zeige die Top 10 Artikel
-    if articles:
-        for article in articles[:10]:
-            st.subheader(f"{article['headline']} ({article['source']})")
-            if article['summary']:
-                st.write(article['summary'])
-            st.markdown(f"[Read more]({article['url']})")
-            st.caption(f"Published: {article['datetime'].strftime('%Y-%m-%d %H:%M')}")
-            st.markdown("---")
-    else:
-        st.info("No recent news found from Finnhub.")
 
 # User Guide
 with st.expander("ℹ️ How to use this page"):
@@ -59,14 +44,6 @@ with st.expander("ℹ️ How to use this page"):
     - Click on each headline to expand and read more.
     - Only a few articles are shown per page to make reading easier.
     """)
-
-# --- Get ticker
-ticker_input = st.session_state.get("ticker", "").strip().upper()
-
-if not ticker_input:
-    st.warning("Please enter a stock ticker on the homepage first.")
-    st.stop()
-
 
 # Paginate the news
 articles_per_page = 5
@@ -79,15 +56,27 @@ if "news_page" not in st.session_state:
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.session_state["news_page"] > 1:
-        if st.button("⬅️ Previous"):
+        if st.button("Previous"):
             st.session_state["news_page"] -= 1
 
 with col3:
     if st.session_state["news_page"] < total_pages:
-        if st.button("Next ➡️"):
+        if st.button("Next"):
             st.session_state["news_page"] += 1
 
 start = (st.session_state["news_page"] - 1) * articles_per_page
 end = start + articles_per_page
 
 st.write(f"Showing {start + 1}-{min(end, total_articles)} of {total_articles} articles")
+
+# After pagination
+if articles:
+    for article in articles[start:end]:
+        st.subheader(f"{article['headline']} ({article['source']})")
+        if article['summary']:
+            st.write(article['summary'])
+        st.markdown(f"[Read more]({article['url']})")
+        st.caption(f"Published: {article['datetime'].strftime('%Y-%m-%d %H:%M')}")
+        st.markdown("---")
+else:
+    st.info("No recent news found from Finnhub.")
