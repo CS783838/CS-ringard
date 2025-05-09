@@ -80,8 +80,9 @@ try:
     stock_margin = info.get("profitMargins")
     stock_div = info.get("dividendYield")
     stock_beta = info.get("beta")
-except:
+except Exception as e:
     st.error("Data temporarily unavailable due to API limits. Please try again later.")
+    print(e)
     st.stop()
 
 # Error if theres no sector / its not in the dictionnary

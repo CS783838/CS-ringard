@@ -21,7 +21,7 @@ st.markdown(
 # User inputs ticker, it is saved in session state so streamlit doesn't reset with every interaction
 st.markdown("Select a Company")
 default_value = st.session_state.get("ticker", "")
-ticker = st.text_input("Enter stock ticker (e.g., AAPL)", value=default_value)
+ticker = st.text_input("Enter stock ticker (e.g., AAPL)", value=default_value, placeholder="Enter Stock Ticker", max_chars=5)
 
 if ticker:
     st.session_state["ticker"] = ticker.strip().upper()
