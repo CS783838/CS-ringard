@@ -141,11 +141,11 @@ if len(profit) == 4:
     slope = model.coef_[0]
 
     if slope > 0.5:
-        st.success("📈 Recommendation based on profit trend: **BUY**")
+        st.success(" Recommendation based on profit trend: **BUY**")
     elif slope < -0.5:
-        st.error("📉 Recommendation based on profit trend: **SELL**")
+        st.error(" Recommendation based on profit trend: **SELL**")
     else:
-        st.info("📊 Recommendation based on profit trend: **HOLD**")
+        st.info(" Recommendation based on profit trend: **HOLD**")
 
     st.caption(f"(Regression slope: {slope:.2f})")
 else:
