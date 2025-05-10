@@ -130,12 +130,12 @@ else:
 # Import linear regression functionality
 from sklearn.linear_model import LinearRegression
 
-# Use last 4 quarters of clean profit values
-clean_profit = profit.dropna().tail(4).sort_index()
+# Use last 4 quarters of profit values, sorted by most recent
+profit = profit.dropna().tail(4).sort_index()
 
-if len(clean_profit) == 4:
+if len(profit) == 4:
     X = np.arange(4).reshape(-1, 1)
-    y = clean_profit.values
+    y = profit.values
 
     model = LinearRegression().fit(X, y)
     slope = model.coef_[0]
@@ -149,4 +149,4 @@ if len(clean_profit) == 4:
 
     st.caption(f"(Regression slope: {slope:.2f})")
 else:
-    st.info("Not enough clean profit data to generate a recommendation.")
+    st.info("Not enough profit data to generate a recommendation.")
