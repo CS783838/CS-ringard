@@ -130,21 +130,23 @@ else:
 # Import linear regression functionality
 from sklearn.linear_model import LinearRegression
 
-# Only applies Machine Learning if we have at least 4 quarters
-if len(profit) >= 4:
-    X = np.arange(len(profit)).reshape(-1, 1)
-    y = profit.values
+# Use last 4 quarters of clean profit values
+clean_profit = profit.dropna().tail(4)
 
-# If the slope of the past profit in each quarter is positive buy, if its flat hold,
-# otherwise sell
+if len(clean_profit) == 4:
+    X = np.arange(4).reshape(-1, 1)
+    y = clean_profit.values
+
     model = LinearRegression().fit(X, y)
     slope = model.coef_[0]
 
     if slope > 0.5:
-        st.success(" Recommendation based on profit trend: **BUY**")
+        st.success("📈 Recommendation based on profit trend: **BUY**")
     elif slope < -0.5:
-        st.error(" Recommendation based on profit trend: **SELL**")
+        st.error("📉 Recommendation based on profit trend: **SELL**")
     else:
-        st.info(" Recommendation based on profit trend: **HOLD**")
+        st.info("📊 Recommendation based on profit trend: **HOLD**")
 
-    st.caption(f"(Linear regression slope: {slope:.2f})")
+    st.caption(f"(Regression slope: {slope:.2f})")
+else:
+    st.info("Not enough clean profit data to generate a recommendation.")
