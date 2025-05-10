@@ -131,7 +131,7 @@ else:
 from sklearn.linear_model import LinearRegression
 
 # Use last 4 quarters of clean profit values
-clean_profit = profit.dropna().tail(4).sortindex()
+clean_profit = profit.dropna().tail(4).sort_index()
 
 if len(clean_profit) == 4:
     X = np.arange(4).reshape(-1, 1)
